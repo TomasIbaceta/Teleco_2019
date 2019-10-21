@@ -1,0 +1,77 @@
+%basic shit, ctrl+enter para cargar el codigo
+
+clear all;
+clc;
+
+T= 0.001; %buena practica definirnos un periodo
+t = [0:T:10]; %del 0 al 10 en intervalos de t
+vert = transpose(t); %version vertical del mismo vector
+x = sin(2*pi*t);
+y = cos(4*pi*t);
+
+%basic plot shit
+plot(t,x,t,y, '.') %plot (dependent,independent,dependent2,independent2 simbolo de las muestras)
+title("Mi primer gráfico :)");
+xlabel("tiempo [s]");
+ylabel("sin(2*pi*t)");
+xlim([0 10]) %le pone limites al grafico
+ylim([-3 3]) %le pone limites al grafico
+%otro grafico
+
+%%
+%Este es un script distinto! Poner el mouse aquí solo ejecutará este codigo
+%nota que el workspace se mantiene igual, tiene las mismas variables
+%a meeenos que empieces tu script con clear all
+clear all
+clc
+
+%con una canción cargada
+soundsc(data, fs) %sonido, frecuencia de muestreo
+
+
+T = 1/fs;
+duracion = length(data) .* T % muestras * segundos / muestras = segundos
+t =[0:T:duracion-T] %hacemos un vector tiempo que calce con el audio
+plot(t,data)
+
+%%
+%Modulacion lineal
+clear all
+clc
+
+ts = 0.00001;
+fs = 1 / ts;
+t=[0: ts: 1-ts] ;
+
+Am=3;
+Ac=2;
+
+m = Am*cos(2*pi* 500 * t);
+p = Ac*cos(2*pi* 4000 * t);
+
+modulacion = m .* p;
+%plot(t,m,t,p)
+plot(t,modulacion)
+xlim([0 0.1]) %si no se ve apretadisimo
+
+%%
+%transformada rapida de fourier
+
+clear all
+clc
+
+ts = 0.00001;
+fs = 1 / ts;
+t=[0: ts: 1-ts] ;
+
+Am=3;
+m = Am*cos(2*pi* 500 * t);
+
+M = fft(m); %te da la transformada - complejo
+M = abs(fft(m)); %te da la transformada - double
+M = abs(fftshift(fft(m))); %te da la transformada - double- pero bien centrada. si quieres plotea con arriba para ver la diferencia
+
+%tenemos que definir un vector de frecuencias
+
+freq = linspace(-fs/2,fs/2,length(t)); %acomoda length(t) puntos entre -fs/2 y fs/2. esto genera un vector frecuencia que coincide con los otros.
+plot(freq,M)
